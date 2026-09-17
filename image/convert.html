@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Convert image — tools</title>
+<meta name="description" content="Move an image between PNG, JPEG and WebP. Runs in your browser; files are never uploaded.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%231F3A2E'/><path d='M8 7h11l5 5v13H8z' fill='none' stroke='%232B44FF' stroke-width='2.5'/></svg>">
+<style>
+  .peek { max-width: 100%; height: auto; border: 1px solid var(--rule); margin-bottom: 0.9rem; display: block; }
+  .out .delta { font-family: "Bricolage Grotesque", system-ui, sans-serif; font-weight: 600; font-size: 1.5rem; letter-spacing: -0.02em; margin: 0 0 0.6rem; }
+  .note { font-size: 0.9rem; color: var(--ink-2); margin: -0.9rem 0 1.5rem; max-width: 48ch; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <a class="mark" href="../">tools<span>.</span></a>
+    <p class="local"><a class="back" href="../">All tools</a></p>
+  </header>
+
+  <main>
+    <h1>Convert image</h1>
+    <p class="lede">Re-encode an image as PNG, JPEG or WebP at its original size. Pixel dimensions are kept exactly as they were.</p>
+
+    <label class="tray" id="tray">
+      <strong>Drop an image here</strong>
+      <span>JPEG, PNG, WebP, GIF or BMP</span>
+      <input type="file" id="pick" accept="image/*">
+    </label>
+
+    <ul class="files" id="files"></ul>
+
+    <div class="row">
+      <div>
+        <label for="to">Save as</label>
+        <select id="to">
+          <option value="image/png">PNG</option>
+          <option value="image/jpeg" selected>JPEG</option>
+          <option value="image/webp">WebP</option>
+        </select>
+      </div>
+      <div id="qbox">
+        <label for="q">Quality <span id="qv">90</span></label>
+        <input type="range" id="q" min="20" max="100" value="90">
+      </div>
+    </div>
+    <p class="note" id="note" hidden>JPEG cannot store transparency. Any see-through areas will come out white.</p>
+
+    <button class="go" id="go" disabled>Convert</button>
+
+    <div class="out" id="out" hidden></div>
+    <p class="err" id="err" hidden></p>
+  </main>
+
+  <footer>
+    <p>Nothing is uploaded. <a href="https://github.com/hungbo/tools">Source on GitHub</a>.</p>
+  </footer>
+
+</div>
+
+<script type="module">
+import { tray, list, fmt, fail } from '../assets/app.js';
+
+const EXT = { 'image/png': 'png', 'image/jpeg': 'jpg', 'image/webp': 'webp' };
+const LABEL = { 'image/png': 'PNG', 'image/jpeg': 'JPEG', 'image/webp': 'WebP' };
+
+let file = null;
+const ul = document.getElementById('files');
+const go = document.getElementById('go');
+const out = document.getElementById('out');
+const err = document.getElementById('err');
+const to = document.getElementById('to');
+const q = document.getElementById('q');
+const qv = document.getElementById('qv');
+const qbox = document.getElementById('qbox');
+const note = document.getElementById('note');
+
+q.addEventListener('input', () => { qv.textContent = q.value; });
+to.addEventListener('change', render);
+
+function render() {
+  list(ul, file ? [file] : [], { onRemove: () => { file = null; render(); } });
+  go.disabled = !file;
+  const lossless = to.value === 'image/png';
+  qbox.hidden = lossless;
+  note.hidden = !(to.value === 'image/jpeg' && file && file.type !== 'image/jpeg');
+  go.textContent = file ? 'Convert to ' + LABEL[to.value] : 'Convert';
+}
+
+tray(document.getElementById('tray'), document.getElementById('pick'), (picked) => {
+  out.hidden = true;
+  err.hidden = true;
+  file = picked[0] || null;
+  render();
+});
+
+go.addEventListener('click', async () => {
+  out.hidden = true;
+  err.hidden = true;
+  go.disabled = true;
+  go.textContent = 'Converting…';
+  try {
+    const bitmap = await createImageBitmap(file);
+    const canvas = document.createElement('canvas');
+    canvas.width = bitmap.width;
+    canvas.height = bitmap.height;
+    const ctx = canvas.getContext('2d');
+
+    // JPEG has no alpha channel, so transparent pixels need a background.
+    if (to.value === 'image/jpeg') {
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    ctx.drawImage(bitmap, 0, 0);
+
+    const blob = await new Promise((res, rej) =>
+      canvas.toBlob((b) => (b ? res(b) : rej(new Error('this browser cannot write that format'))), to.value, q.value / 100)
+    );
+
+    const url = URL.createObjectURL(blob);
+    const name = file.name.replace(/\.[a-z0-9]+$/i, '') + '.' + EXT[to.value];
+
+    out.innerHTML = '';
+    const img = document.createElement('img');
+    img.className = 'peek';
+    img.src = url;
+    img.alt = 'Preview of the converted image';
+    const head = document.createElement('p');
+    head.className = 'delta';
+    head.textContent = LABEL[to.value] + ', ' + fmt(blob.size);
+    const sub = document.createElement('p');
+    sub.textContent = bitmap.width + ' by ' + bitmap.height + ' pixels, from ' + fmt(file.size) + '.';
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = name;
+    a.textContent = 'Save ' + name;
+    out.append(img, head, sub, a);
+    out.hidden = false;
+  } catch (e) {
+    fail(err, 'Could not convert this image. (' + e.message + ')');
+  }
+  render();
+});
+
+render();
+</script>
+</body>
+</html>

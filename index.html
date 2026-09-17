@@ -1,1 +1,155 @@
-tools,pdf,image
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>tools — PDF and image fixes that stay on your machine</title>
+<meta name="description" content="Four small browser tools for PDFs and images. Files are processed in the tab and never uploaded.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/app.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%231F3A2E'/><path d='M8 7h11l5 5v13H8z' fill='none' stroke='%232B44FF' stroke-width='2.5'/></svg>">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <a class="mark" href="./">tools<span>.</span></a>
+    <p class="local">Runs in your browser</p>
+  </header>
+
+  <main>
+    <h1>Fix a file without uploading it.</h1>
+    <p class="lede">Four small tools for PDFs and images. Each one does its work inside this tab, so the file never reaches a server and there is nothing to sign up for.</p>
+
+
+    <figure class="thesis">
+      <svg viewBox="0 0 400 186" fill="none" role="img" aria-labelledby="thesis-title">
+        <title id="thesis-title">Your file goes into this browser tab and comes back out. It is never sent to a server.</title>
+
+        <g transform="translate(4 30)" stroke="currentColor" stroke-width="1.8" opacity=".5">
+          <path d="M0 0h30l14 14v44H0z"/><path d="M30 0v14h14"/>
+        </g>
+        <text x="26" y="104" text-anchor="middle" font-size="11" fill="currentColor" opacity=".6" font-family="IBM Plex Sans, system-ui, sans-serif">your file</text>
+
+        <g stroke="currentColor" stroke-width="1.8" opacity=".35">
+          <path d="M60 59h32"/><path d="m88 54 5 5-5 5"/>
+        </g>
+
+        <g stroke="var(--cobalt)" stroke-width="1.8">
+          <rect x="108" y="16" width="184" height="86" fill="var(--cobalt-tint)"/>
+          <path d="M108 38h184"/>
+        </g>
+        <g fill="var(--cobalt)" opacity=".55">
+          <circle cx="122" cy="27" r="3"/><circle cx="133" cy="27" r="3"/><circle cx="144" cy="27" r="3"/>
+        </g>
+        <text x="200" y="66" text-anchor="middle" font-size="15" font-weight="600" fill="var(--cobalt)" font-family="IBM Plex Sans, system-ui, sans-serif">this tab</text>
+        <text x="200" y="85" text-anchor="middle" font-size="11" fill="var(--cobalt)" opacity=".75" font-family="IBM Plex Sans, system-ui, sans-serif">does the work</text>
+
+        <g stroke="currentColor" stroke-width="1.8" opacity=".35">
+          <path d="M304 59h32"/><path d="m332 54 5 5-5 5"/>
+        </g>
+
+        <g transform="translate(348 30)" stroke="var(--cobalt)" stroke-width="1.8" fill="var(--cobalt-tint)">
+          <path d="M0 0h30l14 14v44H0z"/><path d="M30 0v14h14"/>
+        </g>
+        <text x="370" y="104" text-anchor="middle" font-size="11" fill="var(--cobalt)" font-family="IBM Plex Sans, system-ui, sans-serif">fixed file</text>
+
+        <path d="M200 102v36" stroke="currentColor" stroke-width="1.8" stroke-dasharray="4 5" opacity=".3"/>
+        <g stroke="currentColor" stroke-width="1.8" opacity=".5">
+          <path d="m194 114 12 12"/><path d="m206 114-12 12"/>
+        </g>
+        <text x="200" y="158" text-anchor="middle" font-size="11" fill="currentColor" opacity=".6" font-family="IBM Plex Sans, system-ui, sans-serif">nothing is sent anywhere</text>
+      </svg>
+    </figure>
+
+    <div class="bench">
+
+      <a class="station" href="pdf/merge.html">
+        <svg width="132" height="44" viewBox="0 0 132 44" fill="none" aria-hidden="true">
+          <g stroke="currentColor" stroke-width="1.6" fill="var(--sheet)" opacity=".45">
+            <g transform="translate(1 3)"><path d="M0 0h17l8 8v29H0z"/><path d="M17 0v8h8"/></g>
+            <g transform="translate(14 3)"><path d="M0 0h17l8 8v29H0z"/><path d="M17 0v8h8"/></g>
+            <g transform="translate(27 3)"><path d="M0 0h17l8 8v29H0z"/><path d="M17 0v8h8"/></g>
+          </g>
+          <g stroke="currentColor" stroke-width="1.6" opacity=".3">
+            <path d="M64 21.5h22"/><path d="m81 16.5 5 5-5 5"/>
+          </g>
+          <g transform="translate(99 3)" stroke="var(--cobalt)" stroke-width="1.6" fill="var(--cobalt-tint)">
+            <path d="M0 0h17l8 8v29H0z"/><path d="M17 0v8h8"/>
+          </g>
+        </svg>
+        <h2>Merge PDF</h2>
+        <p>Combine several PDFs into one, in the order you set.</p>
+      </a>
+
+      <a class="station" href="pdf/split.html">
+        <svg width="132" height="44" viewBox="0 0 132 44" fill="none" aria-hidden="true">
+          <g transform="translate(1 3)" stroke="var(--cobalt)" stroke-width="1.6" fill="var(--cobalt-tint)">
+            <path d="M0 0h17l8 8v29H0z"/><path d="M17 0v8h8"/>
+          </g>
+          <g stroke="currentColor" stroke-width="1.6" opacity=".3">
+            <path d="M36 21.5h22"/><path d="m53 16.5 5 5-5 5"/>
+          </g>
+          <g stroke="currentColor" stroke-width="1.6" fill="var(--sheet)" opacity=".45">
+            <g transform="translate(69 3)"><path d="M0 0h17l8 8v29H0z"/><path d="M17 0v8h8"/></g>
+            <g transform="translate(82 3)"><path d="M0 0h17l8 8v29H0z"/><path d="M17 0v8h8"/></g>
+            <g transform="translate(95 3)"><path d="M0 0h17l8 8v29H0z"/><path d="M17 0v8h8"/></g>
+          </g>
+        </svg>
+        <h2>Split PDF</h2>
+        <p>Pull a page range out as its own file.</p>
+      </a>
+
+      <a class="station" href="image/compress.html">
+        <svg width="132" height="44" viewBox="0 0 132 44" fill="none" aria-hidden="true">
+          <g transform="translate(1 3)" stroke="currentColor" stroke-width="1.6" opacity=".45">
+            <rect width="52" height="38"/>
+            <circle cx="13" cy="12" r="4"/>
+            <path d="m3 37 13-16 9 9 8-7 16 14z" fill="var(--sheet)"/>
+          </g>
+          <g stroke="currentColor" stroke-width="1.6" opacity=".3">
+            <path d="M64 21.5h22"/><path d="m81 16.5 5 5-5 5"/>
+          </g>
+          <g transform="translate(99 10)" stroke="var(--cobalt)" stroke-width="1.6">
+            <rect width="32" height="24" fill="none"/>
+            <circle cx="8" cy="8" r="2.6"/>
+            <path d="m2 23 8-10 6 6 5-4 10 8z" fill="var(--cobalt-tint)"/>
+          </g>
+        </svg>
+        <h2>Compress image</h2>
+        <p>Shrink a JPEG, PNG or WebP by quality or width.</p>
+      </a>
+
+      <a class="station" href="image/convert.html">
+        <svg width="132" height="44" viewBox="0 0 132 44" fill="none" aria-hidden="true">
+          <g transform="translate(1 5)" stroke="currentColor" stroke-width="1.6" opacity=".45">
+            <rect width="44" height="34"/>
+            <circle cx="11" cy="10" r="3.4"/>
+            <path d="m3 33 11-14 8 8 6-5 13 11z" fill="var(--sheet)"/>
+          </g>
+          <g stroke="currentColor" stroke-width="1.6" opacity=".3">
+            <path d="M56 17h18"/><path d="m70 13 4 4-4 4"/>
+            <path d="M74 27H56"/><path d="m60 31-4-4 4-4"/>
+          </g>
+          <g transform="translate(86 5)" stroke="var(--cobalt)" stroke-width="1.6">
+            <rect width="44" height="34" fill="none"/>
+            <circle cx="11" cy="10" r="3.4"/>
+            <path d="m3 33 11-14 8 8 6-5 13 11z" fill="var(--cobalt-tint)"/>
+          </g>
+        </svg>
+        <h2>Convert image</h2>
+        <p>Move between PNG, JPEG and WebP.</p>
+      </a>
+
+    </div>
+  </main>
+
+  <footer>
+    <p>Built by Liềng Ỉn Hùng. <a href="https://github.com/hungbo/tools">Source on GitHub</a>.</p>
+  </footer>
+
+</div>
+</body>
+</html>

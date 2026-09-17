@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Merge PDF — tools</title>
+<meta name="description" content="Combine several PDFs into one. Runs in your browser; files are never uploaded.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/app.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%231F3A2E'/><path d='M8 7h11l5 5v13H8z' fill='none' stroke='%232B44FF' stroke-width='2.5'/></svg>">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <a class="mark" href="../">tools<span>.</span></a>
+    <p class="local"><a class="back" href="../">All tools</a></p>
+  </header>
+
+  <main>
+    <h1>Merge PDF</h1>
+    <p class="lede">Pick the PDFs you want joined. They are combined in the order shown below, and the result downloads straight from this tab.</p>
+
+    <label class="tray" id="tray">
+      <strong>Drop PDFs here</strong>
+      <span>or click to choose them</span>
+      <input type="file" id="pick" accept="application/pdf" multiple>
+    </label>
+
+    <ul class="files" id="files"></ul>
+
+    <button class="go" id="go" disabled>Merge into one PDF</button>
+
+    <div class="out" id="out" hidden></div>
+    <p class="err" id="err" hidden></p>
+  </main>
+
+  <footer>
+    <p>Nothing is uploaded. <a href="https://github.com/hungbo/tools">Source on GitHub</a>.</p>
+  </footer>
+
+</div>
+
+<script type="module">
+import { tray, list, result, fail } from '../assets/app.js';
+
+const files = [];
+const ul = document.getElementById('files');
+const go = document.getElementById('go');
+const out = document.getElementById('out');
+const err = document.getElementById('err');
+
+function render() {
+  list(ul, files, {
+    numbered: true,
+    onRemove: (i) => { files.splice(i, 1); render(); },
+    onMoveUp: (i) => { [files[i - 1], files[i]] = [files[i], files[i - 1]]; render(); }
+  });
+  go.disabled = files.length < 2;
+  go.textContent = files.length < 2
+    ? 'Merge into one PDF'
+    : 'Merge ' + files.length + ' PDFs into one';
+}
+
+tray(document.getElementById('tray'), document.getElementById('pick'), (picked) => {
+  for (const f of picked) {
+    if (f.type === 'application/pdf' || f.name.toLowerCase().endsWith('.pdf')) files.push(f);
+  }
+  out.hidden = true;
+  err.hidden = true;
+  render();
+});
+
+go.addEventListener('click', async () => {
+  out.hidden = true;
+  err.hidden = true;
+  go.disabled = true;
+  go.textContent = 'Merging…';
+  try {
+    const { PDFDocument } = PDFLib;
+    const merged = await PDFDocument.create();
+    for (const f of files) {
+      const src = await PDFDocument.load(await f.arrayBuffer(), { ignoreEncryption: true });
+      const pages = await merged.copyPages(src, src.getPageIndices());
+      pages.forEach((p) => merged.addPage(p));
+    }
+    const blob = new Blob([await merged.save()], { type: 'application/pdf' });
+    result(out, blob, 'merged.pdf', merged.getPageCount() + ' pages from ' + files.length + ' files.');
+  } catch (e) {
+    fail(err, 'Could not merge these files. A password-protected or damaged PDF is the usual cause. (' + e.message + ')');
+  }
+  render();
+});
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,295 @@
+:root {
+  --mineral: #E3E7E0;
+  --sheet: #FAFBF8;
+  --paper: #FFFFFF;
+  --ink: #1F3A2E;
+  --ink-2: #556B60;
+  --rule: #C4CCC0;
+  --cobalt: #2B44FF;
+  --cobalt-tint: #E7E9FF;
+  --alert: #A8341B;
+  --shadow: 0 1px 0 var(--rule);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --mineral: #16201B;
+    --sheet: #1D2A23;
+    --paper: #253429;
+    --ink: #E6EDE7;
+    --ink-2: #9DB0A4;
+    --rule: #33453B;
+    --cobalt: #8C9BFF;
+    --cobalt-tint: #232F4D;
+    --alert: #F09077;
+    --shadow: 0 1px 0 var(--rule);
+  }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--mineral);
+  color: var(--ink);
+  font: 400 17px/1.55 "IBM Plex Sans", system-ui, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+.wrap {
+  max-width: 54rem;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* ---- header ---- */
+.top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.75rem 0 2.5rem;
+}
+
+.mark {
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.mark span { color: var(--cobalt); }
+
+.local {
+  font-size: 0.86rem;
+  color: var(--ink-2);
+}
+
+/* ---- display type ---- */
+h1 {
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-weight: 600;
+  font-size: clamp(2.1rem, 6.5vw, 3.35rem);
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  margin: 0 0 1rem;
+  max-width: 17ch;
+}
+
+.lede {
+  font-size: 1.12rem;
+  color: var(--ink-2);
+  max-width: 46ch;
+  margin: 0 0 3rem;
+}
+
+.thesis {
+  margin: 0 0 3rem;
+  padding: 2.25rem 1.5rem 1.75rem;
+  background: var(--sheet);
+  border: 1px solid var(--rule);
+}
+
+.thesis svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 30rem;
+  margin: 0 auto;
+  color: var(--ink);
+}
+
+/* ---- tool grid ---- */
+.bench {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--rule);
+  border: 1px solid var(--rule);
+  margin-bottom: 3rem;
+}
+
+@media (max-width: 40rem) {
+  .bench { grid-template-columns: 1fr; }
+}
+
+.station {
+  background: var(--sheet);
+  padding: 1.6rem 1.5rem 1.4rem;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.station:hover, .station:focus-visible { background: var(--cobalt-tint); }
+
+.station svg { display: block; margin-bottom: 1.1rem; }
+
+.station h2 {
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 1.3rem;
+  letter-spacing: -0.02em;
+  margin: 0 0 0.25rem;
+}
+
+.station p { margin: 0; font-size: 0.95rem; color: var(--ink-2); }
+
+/* ---- tool page ---- */
+.back {
+  color: var(--ink-2);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.back:hover { color: var(--cobalt); text-decoration: underline; }
+
+.tray {
+  display: block;
+  position: relative;
+  border: 2px dashed var(--rule);
+  background: var(--sheet);
+  padding: 3.5rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+}
+
+.tray.hot {
+  border-color: var(--cobalt);
+  border-style: solid;
+  background: var(--cobalt-tint);
+}
+
+.tray strong {
+  display: block;
+  font-family: "Bricolage Grotesque", system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 1.4rem;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.3rem;
+}
+
+.tray span { color: var(--ink-2); font-size: 0.95rem; }
+
+.tray input { position: absolute; inset: 0; width: 1px; height: 1px; opacity: 0; }
+
+.tray:focus-within { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+
+/* ---- file list ---- */
+.files { list-style: none; margin: 0 0 1.5rem; padding: 0; }
+
+.files li {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  background: var(--sheet);
+  border: 1px solid var(--rule);
+  border-bottom: none;
+  padding: 0.7rem 0.9rem;
+}
+
+.files li:last-child { border-bottom: 1px solid var(--rule); }
+
+.files .name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.95rem;
+}
+
+.files .size { color: var(--ink-2); font-size: 0.88rem; }
+
+.files button {
+  border: 0;
+  background: none;
+  color: var(--ink-2);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.88rem;
+  padding: 0.15rem 0.3rem;
+}
+.files button:hover { color: var(--alert); text-decoration: underline; }
+
+.ord {
+  color: var(--ink-2);
+  font-size: 0.82rem;
+  width: 1.4rem;
+  flex: none;
+}
+
+/* ---- controls ---- */
+.row { display: flex; flex-wrap: wrap; gap: 1.25rem; align-items: flex-end; margin-bottom: 1.5rem; }
+
+label { display: block; font-size: 0.9rem; color: var(--ink-2); margin-bottom: 0.35rem; }
+
+input[type="text"], select {
+  font: inherit;
+  padding: 0.5rem 0.65rem;
+  border: 1px solid var(--rule);
+  background: var(--sheet);
+  color: var(--ink);
+  border-radius: 0;
+}
+
+input[type="range"] { width: 15rem; accent-color: var(--cobalt); }
+
+.go {
+  font: 500 1rem/1 "IBM Plex Sans", system-ui, sans-serif;
+  background: var(--cobalt);
+  color: #fff;
+  border: 0;
+  padding: 0.85rem 1.6rem;
+  cursor: pointer;
+}
+
+.go:disabled { background: var(--rule); color: var(--ink-2); cursor: not-allowed; }
+
+@media (prefers-color-scheme: dark) {
+  .go { color: #131C22; }
+}
+
+:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+
+/* ---- result ---- */
+.out {
+  border: 1px solid var(--cobalt);
+  background: var(--cobalt-tint);
+  padding: 1.1rem 1.2rem;
+  margin-top: 1.5rem;
+}
+
+.out p { margin: 0 0 0.75rem; font-size: 0.95rem; }
+
+.out a {
+  display: inline-block;
+  background: var(--cobalt);
+  color: #fff;
+  text-decoration: none;
+  padding: 0.6rem 1.2rem;
+  font-weight: 500;
+}
+
+@media (prefers-color-scheme: dark) { .out a { color: #131C22; } }
+
+.err { color: var(--alert); font-size: 0.95rem; margin: 1rem 0 0; }
+
+/* ---- footer ---- */
+footer {
+  border-top: 1px solid var(--rule);
+  margin-top: 4rem;
+  padding: 1.5rem 0 3rem;
+  font-size: 0.88rem;
+  color: var(--ink-2);
+}
+
+footer a { color: var(--ink-2); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
